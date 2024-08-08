@@ -5,6 +5,10 @@ using System.Linq;
 using System.Runtime.InteropServices.JavaScript;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace MauiTempoAtual.Service
 {
@@ -23,15 +27,31 @@ namespace MauiTempoAtual.Service
             {
                 HttpResponseMessage response = await client.GetAsync(url);
 
-                if (response.IsSuccessStatusCode) { 
+                if (response.IsSuccessStatusCode)
+                {
                     string json = response.Content.ReadAsStringAsync().Result;
 
-                    var rascunho = JObject.Parse(json);
-
+                    //var rascunho = JsonConvert.DeserializeObject(json);
+                    var rascunho = JSObject.Parse(json);
                     DateTime time = new DateTime(1970, 1, 1, 0, 0, 0, 0);
-                    DateTime sunrise = time.AddSeconds((double)rascunho["sys"]["sunrise"]).ToLocalTime() ;
+                    DateTime sunrise = time.AddSeconds((double)rascunho["sys"]["sunrise"]).ToLocalTime();
                     DateTime sunset = time.AddSeconds((double)rascunho["sys"]["sunset"]).ToLocalTime();
+
+                    tempo = new()
+                    {
+                        Humidity = (string)rascunho["main"]["humidity"],
+                        Temperature = (string)rascunho["main"]["temp"],
+                        Title = (string)rascunho["name"],
+                        Visibility = (string)rascunho["visibility"],
+                        Wind = (string)rascunho["wind"]["speed"],
+                        Sunrise = sunrise.ToString(),
+                        Sunset = sunset.ToString(),
+                        Weather = (string)rascunho["weather"][0]["main"],
+                        WeatherDescription = (string)rascunho["weather"][0]["description"],
+                    };
                 }
+            }
+                return tempo;
             }
     }
 }
