@@ -13,10 +13,10 @@
                 <Button x:Name="btn_getLoaction" Text="Obter Localização" Clicked="btn_getLoaction_Clicked"/>
 
                 <Label Text="Latitude:"/>
-                <Entry x:Name="lbl_latitude" Text="37,421998333333335"/>
+                <Entry x:Name="lbl_latitude" Placeholder="37,421998333333335"/>
 
                 <Label Text="Longitude:"/>
-                <Entry x:Name="lbl_longitude" Text="-122,084"/>
+                <Entry x:Name="lbl_longitude" Placeholder="-122,084"/>
 
                 <Button x:Name="btn_placemark" Text="Obter Placemark" Clicked="btn_placemark_Clicked"/>
 
